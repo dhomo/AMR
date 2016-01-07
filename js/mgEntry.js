@@ -16,9 +16,14 @@
   along with All Mangas Reader.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-var amrc_repository = "https://ssl10.ovh.net/~allmanga/community/latest_v2/";
+//NEW URLS
+var amrc_repository = "https://rawgit.com/dhomo/mirrors/master/";
 var amrc_root = "https://ssl10.ovh.net/~allmanga/community/";
-var amrc_repository_backup = "https://raw.github.com/AllMangasReader-dev/mirrors/master/";
+var amrc_repository_backup = "https://rawgit.com/AllMangasReader-dev/mirrors/master/";
+
+/*** CONFIG OPTIONS ***/
+//Mirrors can also be loaded by including the file in the js/mirrors/ directory. These will always take priority.
+var localMirrors = [];
 
 //##############################################################################
 // Load websites description and code in one array. Do first load if necessary.
@@ -53,6 +58,10 @@ function getMirrorsDescription(callback) {
             });
           });
           break;
+        }
+        if ($.inArray(websites[i].mirrorName, localMirrors) !== -1) {
+          console.log(websites[i].mirrorName + " check to load locally");
+          websites[i].jsCode = chrome.extension.getURL('js/mirrors/' + websites[i].mirrorName + '.js');
         }
       }
       if (!mustUpdate) {
